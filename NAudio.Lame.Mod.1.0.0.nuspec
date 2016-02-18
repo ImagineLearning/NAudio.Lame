@@ -19,7 +19,7 @@
     </metadata>
     <files>
         <file src="libmp3lame.dll" target="content\libmp3lame.dll" />
-        <file src="bin\Release\NAudio.Lame.dll" target="lib\net20\NAudio.Lame.dll" />
+        <file src="bin\Release\NAudio.Lame.Mod.dll" target="lib\net20\NAudio.Lame.Mod.dll" />
         <file src="Tools\install.ps1" target="tools\install.ps1" />
     </files>
 </package>
