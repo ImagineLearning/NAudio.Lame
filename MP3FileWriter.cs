@@ -254,17 +254,19 @@ namespace NAudio.Lame
 			// check for unsupported wave formats
 			if (format.Channels != 1 && format.Channels != 2)
 				throw new ArgumentException(string.Format("Unsupported number of channels {0}", format.Channels), "format");
-			if (format.Encoding != WaveFormatEncoding.Pcm && format.Encoding != WaveFormatEncoding.IeeeFloat)
+			if (format.Encoding != WaveFormatEncoding.Pcm && format.Encoding != WaveFormatEncoding.IeeeFloat && format.Encoding != WaveFormatEncoding.Extensible)
 				throw new ArgumentException(string.Format("Unsupported encoding format {0}", format.Encoding.ToString()), "format");
 			if (format.Encoding == WaveFormatEncoding.Pcm && format.BitsPerSample != 16)
 				throw new ArgumentException(string.Format("Unsupported PCM sample size {0}", format.BitsPerSample), "format");
+			if (format.Encoding == WaveFormatEncoding.Extensible && format.BitsPerSample != 16)
+				throw new ArgumentException(string.Format("Unsupported Extensible sample size {0}", format.BitsPerSample), "format");
 			if (format.Encoding == WaveFormatEncoding.IeeeFloat && format.BitsPerSample != 32)
 				throw new ArgumentException(string.Format("Unsupported Float sample size {0}", format.BitsPerSample), "format");
-			if (format.SampleRate < 8000 || format.SampleRate > 48000)
+			if (format.SampleRate < 8000 || format.SampleRate > 96000)
 				throw new ArgumentException(string.Format("Unsupported Sample Rate {0}", format.SampleRate), "format");
 
 			// select encoder function that matches data format
-			if (format.Encoding == WaveFormatEncoding.Pcm)
+			if (format.Encoding == WaveFormatEncoding.Pcm || format.Encoding == WaveFormatEncoding.Extensible)
 			{
 				if (format.Channels == 1)
 					_encode = encode_pcm_16_mono;
@@ -335,17 +337,19 @@ namespace NAudio.Lame
 			// check for unsupported wave formats
 			if (format.Channels != 1 && format.Channels != 2)
 				throw new ArgumentException(string.Format("Unsupported number of channels {0}", format.Channels), "format");
-			if (format.Encoding != WaveFormatEncoding.Pcm && format.Encoding != WaveFormatEncoding.IeeeFloat)
+			if (format.Encoding != WaveFormatEncoding.Pcm && format.Encoding != WaveFormatEncoding.IeeeFloat && format.Encoding != WaveFormatEncoding.Extensible)
 				throw new ArgumentException(string.Format("Unsupported encoding format {0}", format.Encoding.ToString()), "format");
 			if (format.Encoding == WaveFormatEncoding.Pcm && format.BitsPerSample != 16)
 				throw new ArgumentException(string.Format("Unsupported PCM sample size {0}", format.BitsPerSample), "format");
+			if (format.Encoding == WaveFormatEncoding.Extensible && format.BitsPerSample != 16)
+				throw new ArgumentException(string.Format("Unsupported Extensible sample size {0}", format.BitsPerSample), "format");
 			if (format.Encoding == WaveFormatEncoding.IeeeFloat && format.BitsPerSample != 32)
 				throw new ArgumentException(string.Format("Unsupported Float sample size {0}", format.BitsPerSample), "format");
 			if (format.SampleRate < 8000 || format.SampleRate > 48000)
 				throw new ArgumentException(string.Format("Unsupported Sample Rate {0}", format.SampleRate), "format");
 
 			// select encoder function that matches data format
-			if (format.Encoding == WaveFormatEncoding.Pcm)
+			if (format.Encoding == WaveFormatEncoding.Pcm || format.Encoding == WaveFormatEncoding.Extensible)
 			{
 				if (format.Channels == 1)
 					_encode = encode_pcm_16_mono;
