@@ -12,7 +12,7 @@
     <AssemblyName>NAudio.Lame</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AssemblyName>NAudio.Lame.Mod</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -54,6 +54,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="LameDLLWrap\bin\x64\Release\LameDLLWrap.dll" Condition=" '$(Configuration)' == 'Release' " />
+    <EmbeddedResource Include="LameDLLWrap\bin\x86\Release\LameDLLWrap.dll" Condition=" '$(Configuration)' == 'Release' " />
+    <EmbeddedResource Include="LameDLLWrap\bin\x64\Debug\LameDLLWrap.dll" Condition=" '$(Configuration)' == 'Debug' " />
+    <EmbeddedResource Include="LameDLLWrap\bin\x86\Debug\LameDLLWrap.dll" Condition=" '$(Configuration)' == 'Debug' " />
     <ProjectReference Include="LameDLLWrap\LameDLLWrap.csproj">
       <Project>{F6F99810-86D6-4E4C-AD65-10C0F0DED1CE}</Project>
       <Name>LameDLLWrap</Name>
@@ -61,8 +65,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LameDLLWrap\bin\x64\Release\LameDLLWrap.dll" />
-    <EmbeddedResource Include="LameDLLWrap\bin\x86\Release\LameDLLWrap.dll" />
+    <EmbeddedResource Include="libmp3lame.32.dll" />
+    <EmbeddedResource Include="libmp3lame.64.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

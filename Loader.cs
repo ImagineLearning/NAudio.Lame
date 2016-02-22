@@ -24,7 +24,10 @@
 // 
 #endregion
 using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace NAudio.Lame
@@ -33,6 +36,33 @@ namespace NAudio.Lame
 	{
 		internal static bool Initialized = false;
 		internal static string LoadedName;
+
+        internal static bool unmanagedDllLoaded = false;
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LoadLibrary(string dllToLoad);
+
+
+        private static void LoadUnmanagedDll()
+	    {
+	        if (unmanagedDllLoaded)
+	            return;
+
+	        var dllName = string.Format("libmp3lame.{0}.dll", Environment.Is64BitProcess ? "64" : "32");
+            var dllPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(dllPath);
+            var resourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().First(r => r.EndsWith(dllName, StringComparison.InvariantCultureIgnoreCase));
+
+            using (var fileStream = new FileStream(Path.Combine(dllPath, dllName), FileMode.CreateNew))
+            using (var resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                resourceStream.CopyTo(fileStream);
+            }
+
+            LoadLibrary(Path.Combine(dllPath, dllName));
+
+            unmanagedDllLoaded = true;
+	    }
 
 		private static Assembly LoadLameWrapper(object sender, ResolveEventArgs args)
 		{
@@ -68,6 +98,7 @@ namespace NAudio.Lame
 			//Console.WriteLine("Loaded {0} bytes from resource", src.Length);
 			try
 			{
+                LoadUnmanagedDll();
 				var res = Assembly.Load(src, null, SecurityContextSource.CurrentAppDomain);
 				return res;
 			}
